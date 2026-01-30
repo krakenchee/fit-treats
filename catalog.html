@@ -42,7 +42,7 @@
     
       min-height: 600px; /* Фиксированная высота для 6 продуктов (2 ряда) */
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      
       gap: 1.5rem;
       position: relative;
     }
@@ -50,6 +50,11 @@
     @media (max-width: 475px) {
       #catalog-grid {
       align-content: center
+      }
+    }
+    @media (min-width: 786px) {
+      #catalog-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       }
     }
   </style>
@@ -78,6 +83,7 @@
   <script type="module" src="js/script.js"></script>
 </body>
 </html>
+
 
 
 
