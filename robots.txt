@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://fit-treats-five.vercel.app/sitemap.xml
+Sitemap: https://fit-treats-n7ei.vercel.app/sitemap.xml
+
