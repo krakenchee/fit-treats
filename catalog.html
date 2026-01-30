@@ -39,12 +39,18 @@
       padding: 0 1rem;
     }
      #catalog-grid {
-      align-content: center
+    
       min-height: 600px; /* Фиксированная высота для 6 продуктов (2 ряда) */
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
       position: relative;
+    }
+
+    @media (max-width: 475px) {
+      #catalog-grid {
+      align-content: center
+      }
     }
   </style>
   <link rel="stylesheet" href="./css/bo.css">
@@ -72,5 +78,6 @@
   <script type="module" src="js/script.js"></script>
 </body>
 </html>
+
 
 
