@@ -312,6 +312,39 @@ section {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
+
+.pr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.pr-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
 .cta-btn:hover::before {
   left: 100%;
 }
@@ -322,6 +355,10 @@ section {
 
 .cta-btn:hover .cta-btn-icon {
   transform: translateX(4px);
+}
+
+.pr {
+  border: 2px solid #dc2626;
 }
 
 .products-display {
