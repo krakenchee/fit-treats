@@ -46,7 +46,7 @@ const modalHTML = `
       <form class="contact-form" style="margin: 0;">
         <input type="text" placeholder="Ваше имя" required>
         <input type="text" class="tel" placeholder="Ваш телефон" required>
-        <button style="width: 100%;">Отправить</button>
+        <button type="submit" class="btn" style="width: 100%;">Отправить</button>
       </form>
     </div>
   </div>
@@ -807,4 +807,5 @@ document.addEventListener('DOMContentLoaded', function() {
   filterArticles('all');
 
 });
+
 
