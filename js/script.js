@@ -1,4 +1,4 @@
-import { products, categories } from './data.js';
+import { products, categories } from './dabvta.js';
 
 // Layout Injection
 const headerHTML = `
@@ -807,5 +807,6 @@ document.addEventListener('DOMContentLoaded', function() {
   filterArticles('all');
 
 });
+
 
 
