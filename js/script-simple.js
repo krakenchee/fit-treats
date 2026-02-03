@@ -4,7 +4,7 @@ const headerHTML = `
   <nav class="container">
     <a href="../index.html" class="logo">Fit-Treats</a>
     <div class="nav-links">
-      <a href="../index.html">Главная</a>
+      <a href="../index.html">Главнтмая</a>
       <a href="../catalog.html">Каталог</a>
       <a href="../blog.html">Блог</a>
       <a href="../delivery.html">Доставка и оплата</a>
@@ -56,4 +56,5 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
 });
