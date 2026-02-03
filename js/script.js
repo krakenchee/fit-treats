@@ -1,3 +1,5 @@
+import { products, categories } from './data.js';
+
 // Layout Injection
 const headerHTML = `
   <nav class="container">
@@ -144,7 +146,222 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Render Popular Products (Home Page)
+  const popularGrid = document.getElementById('popular-products');
+  if (popularGrid) {
+    const popular = products.filter(p => p.popular).slice(0, 3);
+    popularGrid.innerHTML = popular.map(createProductCard).join('');
+  }
+
+  // Render Catalog (Catalog Page)
+  const catalogGrid = document.getElementById('catalog-grid');
+  if (catalogGrid) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('category');
   
+    if (categoryId) {
+      // Show products for category
+      const category = categories.find(c => c.id === categoryId);
+      if (category) {
+        document.getElementById('page-title').textContent = category.name;
+        document.getElementById('category-desc').textContent = category.description;
+        
+        const categoryProducts = products.filter(p => p.category === categoryId);
+        catalogGrid.innerHTML = categoryProducts.map(createProductCard).join('');
+        
+        // Update breadcrumbs
+        const breadcrumbs = document.querySelector('.breadcrumbs');
+        if (breadcrumbs) {
+          breadcrumbs.innerHTML += `<span>/</span> <span>${category.name}</span>`;
+        }
+      }
+    } else {
+      // Show categories
+      catalogGrid.innerHTML = categories.map(cat => `
+        <a href="catalog.html?category=${cat.id}" class="product-card" style="position: relative; height: 300px; display: flex; align-items: flex-end; text-align: left;">
+          <div style="position: absolute; inset: 0; z-index: 0;">
+             ${getCategoryImage(cat.id)}
+             <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4);"></div>
+          </div>
+          <div style="position: relative; z-index: 1; padding: 2rem; color: white;">
+            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">${cat.name}</h2>
+            <p style="font-size: 0.9rem; opacity: 0.9;">${cat.description}</p>
+          </div>
+        </a>
+      `).join('');
+    }
+  }
+
+  // Render Product Detail
+  const productDetail = document.getElementById('product-detail');
+  if (productDetail) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    const product = products.find(p => p.id === productId);
+
+    if (product) {
+      updateProductMetaTags(product);
+      document.title = `${product.name} | Fit-Treats`;
+      
+      // Update breadcrumbs
+      const breadcrumbs = document.querySelector('.breadcrumbs');
+      const category = categories.find(c => c.id === product.category);
+      if (breadcrumbs && category) {
+        breadcrumbs.innerHTML += `
+          <span>/</span> <a href="catalog.html?category=${category.id}">${category.name}</a>
+          <span>/</span> <span>${product.name}</span>
+        `;
+      }
+
+      const imageBase = product.image.replace('assets/', '').replace('.webp', '');
+
+      productDetail.innerHTML = `
+        <div class="product-image" style="height: auto; border-radius: 1rem; overflow: hidden;">
+          <picture>
+          <source 
+            srcset="assets/${imageBase}-mobile.webp"
+            media="(max-width: 640px)"
+            type="image/webp"
+            width="300"
+            height="200"
+          >
+          <source 
+            srcset="assets/${imageBase}-tablet.webp"
+            media="(max-width: 1024px)"
+            type="image/webp"
+            width="400"
+            height="267"
+          >
+          <img 
+            src="${product.image}" 
+            alt="${product.alt || product.name}"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            width="600"
+            height="400"
+            style="aspect-ratio: 600 / 400; width: 100%; height: auto;"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 600px"
+          >
+        </picture>
+        </div>
+        <div>
+          <h1 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 1rem;">${product.name}</h1>
+          <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 2rem;">${product.price} ₽</div>
+          
+          <div style="margin-bottom: 2rem;">
+            <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Описание</h3>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">${product.description}</p>
+            
+            <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Состав</h3>
+            <p style="color: var(--text-light);">${product.composition}</p>
+          </div>
+
+          <button class="btn" data-modal="open">Заказать</button>
+        </div>
+      `;
+    }
+  }
+});
+
+// Добавьте эту функцию в script.js
+function updateProductMetaTags(product) {
+  // Обновляем title
+  document.title = `${product.name} без сахара | Купить ${product.category === 'cakes' ? 'торт' : 'десерт'} Fit-Treats Москва`;
+  
+  // Создаем или обновляем мета-тег description
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.name = 'description';
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.content = `Купить ${product.name.toLowerCase()} без сахара. ${product.shortDescription} Состав: ${product.composition}. Доставка по Москве.`;
+  
+  // Создаем или обновляем мета-тег keywords
+  let metaKeywords = document.querySelector('meta[name="keywords"]');
+  if (!metaKeywords) {
+    metaKeywords = document.createElement('meta');
+    metaKeywords.name = 'keywords';
+    document.head.appendChild(metaKeywords);
+  }
+  const categoryNames = {
+    'cakes': 'торт',
+    'pastries': 'пирожное', 
+    'candies': 'конфеты',
+    'bars': 'батончик'
+  };
+  const productType = categoryNames[product.category] || 'десерт';
+  metaKeywords.content = `купить ${product.name.toLowerCase()}, ${product.name.toLowerCase()} без сахара, ${productType} без сахара цена, заказать ${product.name.toLowerCase()} Москва`;
+  
+  // Обновляем Open Graph
+  let ogTitle = document.querySelector('meta[property="og:title"]');
+  let ogDesc = document.querySelector('meta[property="og:description"]');
+  let ogUrl = document.querySelector('meta[property="og:url"]');
+  let ogImage = document.querySelector('meta[property="og:image"]');
+  
+  if (ogTitle) ogTitle.content = `${product.name} без сахара | Fit-Treats`;
+  if (ogDesc) ogDesc.content = `${product.shortDescription} Без сахара, глютена и молочных продуктов.`;
+  if (ogUrl) ogUrl.content = `https://fit-treats-five.vercel.app/product.html?id=${product.id}`;
+  if (ogImage) ogImage.content = `https://fit-treats-five.vercel.app/${product.image}`;
+  
+  // Добавляем canonical URL
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.appendChild(canonical);
+  }
+  canonical.href = `https://fit-treats-five.vercel.app/product.html?id=${product.id}`;
+}
+
+function createProductCard(product) {
+  const imageBase = product.image.replace('assets/', '').replace('.webp', '');
+
+  return `
+    <a href="product.html?id=${product.id}" class="product-card">
+      <div class="product-image">
+        <picture>
+          <!-- Mobile (до 640px) -->
+          <source 
+            srcset="assets/${imageBase}-mobile.webp"
+            media="(max-width: 640px)"
+            type="image/webp"
+            width="300"
+            height="200"
+          >
+          <!-- Tablet (до 1024px) -->
+          <source 
+            srcset="assets/${imageBase}-tablet.webp"
+            media="(max-width: 1024px)"
+            type="image/webp"
+            width="400"
+            height="267"
+          >
+          <!-- Desktop -->
+          <img 
+            src="${product.image}" 
+            alt="${product.alt || product.name}"
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="400"
+            style="aspect-ratio: 600 / 400"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          >
+        </picture>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">${product.name}</h3>
+        <p class="product-desc">${product.shortDescription}</p>
+        <div class="product-footer">
+          <span class="product-price">${product.price} ₽</span>
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+        </div>
+      </div>
+    </a>
+  `;
+}
 
 // FAQ для страницы доставки
 document.addEventListener('DOMContentLoaded', function() {
@@ -174,6 +391,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+
+function getCategoryImage(id) {
+  const images = {
+    'cakes': {
+      desktop: 'assets/cake-passion-fruit.webp',
+      tablet: 'assets/cake-passion-fruit-tablet.webp',
+      mobile: 'assets/cake-passion-fruit-mobile.webp'
+    },
+    'pastries': {
+      desktop: 'assets/croissant.webp',
+      tablet: 'assets/croissant-tablet.webp',
+      mobile: 'assets/croissant-mobile.webp'
+    },
+    'candies': {
+      desktop: 'assets/candies.webp',
+      tablet: 'assets/candies-tablet.webp',
+      mobile: 'assets/candies-mobile.webp'
+    },
+    'bars': {
+      desktop: 'assets/bars.webp',
+      tablet: 'assets/bars-tablet.webp',
+      mobile: 'assets/bars-mobile.webp'
+    }
+  };
+
+   const img = images[id] || images['pastries'];
+  
+  return `
+    <picture>
+      <source 
+        srcset="${img.mobile}"
+        media="(max-width: 640px)"
+        type="image/webp"
+        width="300"
+        height="200"
+      >
+      <source 
+        srcset="${img.tablet}"
+        media="(max-width: 1024px)"
+        type="image/webp"
+        width="400"
+        height="267"
+      >
+      <img 
+        src="${img.desktop}" 
+        alt="${id} категория"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="400"
+        style="width: 100%; height: 100%; object-fit: cover;"
+      >
+    </picture>
+  `;
+}
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -528,283 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Инициализация: показываем все статьи при загрузке
   filterArticles('all');
+
 });
-
-  // Render Popular Products (Home Page)
-  const popularGrid = document.getElementById('popular-products');
-  if (popularGrid) {
-    const popular = products.filter(p => p.popular).slice(0, 3);
-    popularGrid.innerHTML = popular.map(createProductCard).join('');
-  }
-
-  // Render Catalog (Catalog Page)
-  const catalogGrid = document.getElementById('catalog-grid');
-  if (catalogGrid) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryId = urlParams.get('category');
-  
-    if (categoryId) {
-      // Show products for category
-      const category = categories.find(c => c.id === categoryId);
-      if (category) {
-        document.getElementById('page-title').textContent = category.name;
-        document.getElementById('category-desc').textContent = category.description;
-        
-        const categoryProducts = products.filter(p => p.category === categoryId);
-        catalogGrid.innerHTML = categoryProducts.map(createProductCard).join('');
-        
-        // Update breadcrumbs
-        const breadcrumbs = document.querySelector('.breadcrumbs');
-        if (breadcrumbs) {
-          breadcrumbs.innerHTML += `<span>/</span> <span>${category.name}</span>`;
-        }
-      }
-    } else {
-      // Show categories
-      catalogGrid.innerHTML = categories.map(cat => `
-        <a href="catalog.html?category=${cat.id}" class="product-card" style="position: relative; height: 300px; display: flex; align-items: flex-end; text-align: left;">
-          <div style="position: absolute; inset: 0; z-index: 0;">
-             ${getCategoryImage(cat.id)}
-             <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4);"></div>
-          </div>
-          <div style="position: relative; z-index: 1; padding: 2rem; color: white;">
-            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">${cat.name}</h2>
-            <p style="font-size: 0.9rem; opacity: 0.9;">${cat.description}</p>
-          </div>
-        </a>
-      `).join('');
-    }
-  }
-
-  // Render Product Detail
-  const productDetail = document.getElementById('product-detail');
-  if (productDetail) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-    const product = products.find(p => p.id === productId);
-
-    if (product) {
-      updateProductMetaTags(product);
-      document.title = `${product.name} | Fit-Treats`;
-      
-      // Update breadcrumbs
-      const breadcrumbs = document.querySelector('.breadcrumbs');
-      const category = categories.find(c => c.id === product.category);
-      if (breadcrumbs && category) {
-        breadcrumbs.innerHTML += `
-          <span>/</span> <a href="catalog.html?category=${category.id}">${category.name}</a>
-          <span>/</span> <span>${product.name}</span>
-        `;
-      }
-
-      const imageBase = product.image.replace('assets/', '').replace('.webp', '');
-
-      productDetail.innerHTML = `
-        <div class="product-image" style="height: auto; border-radius: 1rem; overflow: hidden;">
-          <picture>
-          <source 
-            srcset="assets/${imageBase}-mobile.webp"
-            media="(max-width: 640px)"
-            type="image/webp"
-            width="300"
-            height="200"
-          >
-          <source 
-            srcset="assets/${imageBase}-tablet.webp"
-            media="(max-width: 1024px)"
-            type="image/webp"
-            width="400"
-            height="267"
-          >
-          <img 
-            src="${product.image}" 
-            alt="${product.alt || product.name}"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            width="600"
-            height="400"
-            style="aspect-ratio: 600 / 400; width: 100%; height: auto;"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 600px"
-          >
-        </picture>
-        </div>
-        <div>
-          <h1 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 1rem;">${product.name}</h1>
-          <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 2rem;">${product.price} ₽</div>
-          
-          <div style="margin-bottom: 2rem;">
-            <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Описание</h3>
-            <p style="color: var(--text-light); margin-bottom: 1.5rem;">${product.description}</p>
-            
-            <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Состав</h3>
-            <p style="color: var(--text-light);">${product.composition}</p>
-          </div>
-
-          <button class="btn" data-modal="open">Заказать</button>
-        </div>
-      `;
-    }
-  }
-});
-
-// Добавьте эту функцию в script.js
-function updateProductMetaTags(product) {
-  // Обновляем title
-  document.title = `${product.name} без сахара | Купить ${product.category === 'cakes' ? 'торт' : 'десерт'} Fit-Treats Москва`;
-  
-  // Создаем или обновляем мета-тег description
-  let metaDesc = document.querySelector('meta[name="description"]');
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.name = 'description';
-    document.head.appendChild(metaDesc);
-  }
-  metaDesc.content = `Купить ${product.name.toLowerCase()} без сахара. ${product.shortDescription} Состав: ${product.composition}. Доставка по Москве.`;
-  
-  // Создаем или обновляем мета-тег keywords
-  let metaKeywords = document.querySelector('meta[name="keywords"]');
-  if (!metaKeywords) {
-    metaKeywords = document.createElement('meta');
-    metaKeywords.name = 'keywords';
-    document.head.appendChild(metaKeywords);
-  }
-  const categoryNames = {
-    'cakes': 'торт',
-    'pastries': 'пирожное', 
-    'candies': 'конфеты',
-    'bars': 'батончик'
-  };
-  const productType = categoryNames[product.category] || 'десерт';
-  metaKeywords.content = `купить ${product.name.toLowerCase()}, ${product.name.toLowerCase()} без сахара, ${productType} без сахара цена, заказать ${product.name.toLowerCase()} Москва`;
-  
-  // Обновляем Open Graph
-  let ogTitle = document.querySelector('meta[property="og:title"]');
-  let ogDesc = document.querySelector('meta[property="og:description"]');
-  let ogUrl = document.querySelector('meta[property="og:url"]');
-  let ogImage = document.querySelector('meta[property="og:image"]');
-  
-  if (ogTitle) ogTitle.content = `${product.name} без сахара | Fit-Treats`;
-  if (ogDesc) ogDesc.content = `${product.shortDescription} Без сахара, глютена и молочных продуктов.`;
-  if (ogUrl) ogUrl.content = `https://fit-treats-five.vercel.app/product.html?id=${product.id}`;
-  if (ogImage) ogImage.content = `https://fit-treats-five.vercel.app/${product.image}`;
-  
-  // Добавляем canonical URL
-  let canonical = document.querySelector('link[rel="canonical"]');
-  if (!canonical) {
-    canonical = document.createElement('link');
-    canonical.rel = 'canonical';
-    document.head.appendChild(canonical);
-  }
-  canonical.href = `https://fit-treats-five.vercel.app/product.html?id=${product.id}`;
-}
-
-function createProductCard(product) {
-  const imageBase = product.image.replace('assets/', '').replace('.webp', '');
-
-  return `
-    <a href="product.html?id=${product.id}" class="product-card">
-      <div class="product-image">
-        <picture>
-          <!-- Mobile (до 640px) -->
-          <source 
-            srcset="assets/${imageBase}-mobile.webp"
-            media="(max-width: 640px)"
-            type="image/webp"
-            width="300"
-            height="200"
-          >
-          <!-- Tablet (до 1024px) -->
-          <source 
-            srcset="assets/${imageBase}-tablet.webp"
-            media="(max-width: 1024px)"
-            type="image/webp"
-            width="400"
-            height="267"
-          >
-          <!-- Desktop -->
-          <img 
-            src="${product.image}" 
-            alt="${product.alt || product.name}"
-            loading="lazy"
-            decoding="async"
-            width="600"
-            height="400"
-            style="aspect-ratio: 600 / 400"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          >
-        </picture>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">${product.name}</h3>
-        <p class="product-desc">${product.shortDescription}</p>
-        <div class="product-footer">
-          <span class="product-price">${product.price} ₽</span>
-          <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
-        </div>
-      </div>
-    </a>
-  `;
-}
-
-function getCategoryImage(id) {
-  const images = {
-    'cakes': {
-      desktop: 'assets/cake-passion-fruit.webp',
-      tablet: 'assets/cake-passion-fruit-tablet.webp',
-      mobile: 'assets/cake-passion-fruit-mobile.webp'
-    },
-    'pastries': {
-      desktop: 'assets/croissant.webp',
-      tablet: 'assets/croissant-tablet.webp',
-      mobile: 'assets/croissant-mobile.webp'
-    },
-    'candies': {
-      desktop: 'assets/candies.webp',
-      tablet: 'assets/candies-tablet.webp',
-      mobile: 'assets/candies-mobile.webp'
-    },
-    'bars': {
-      desktop: 'assets/bars.webp',
-      tablet: 'assets/bars-tablet.webp',
-      mobile: 'assets/bars-mobile.webp'
-    }
-  };
-
-   const img = images[id] || images['pastries'];
-  
-  return `
-    <picture>
-      <source 
-        srcset="${img.mobile}"
-        media="(max-width: 640px)"
-        type="image/webp"
-        width="300"
-        height="200"
-      >
-      <source 
-        srcset="${img.tablet}"
-        media="(max-width: 1024px)"
-        type="image/webp"
-        width="400"
-        height="267"
-      >
-      <img 
-        src="${img.desktop}" 
-        alt="${id} категория"
-        loading="lazy"
-        decoding="async"
-        width="600"
-        height="400"
-        style="width: 100%; height: 100%; object-fit: cover;"
-      >
-    </picture>
-  `;
-}
-
-
-
-
-
 
 
