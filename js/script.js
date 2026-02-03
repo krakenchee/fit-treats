@@ -807,7 +807,3 @@ document.addEventListener('DOMContentLoaded', function() {
   filterArticles('all');
 
 });
-
-
-
-
