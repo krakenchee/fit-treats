@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://fit-treats-n7ei.vercel.app/</loc>
+    <loc>https://fit-treats-three.vercel.app/</loc>
     <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://fit-treats-n7ei.vercel.app/catalog.html</loc>
+    <loc>https://fit-treats-three.vercel.app/catalog.html</loc>
     <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://fit-treats-n7ei.vercel.app/products/maracuya-shokolad.html</loc>
+    <loc>https://fit-treats-three.vercel.app/products/maracuya-shokolad.html</loc>
     <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://fit-treats-n7ei.vercel.app/blog.html</loc>
+    <loc>https://fit-treats-three.vercel.app/blog.html</loc>
     <lastmod>2026-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://fit-treats-n7ei.vercel.app/delivery.html</loc>
+    <loc>https://fit-treats-three.vercel.app/delivery.html</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>
+
 
 
 
