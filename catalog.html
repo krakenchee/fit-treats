@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="icon" href="./assets/logo.svg" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог полезных десертов без сахара | Fit-Treats</title>
+  <meta name="description" content="Каталог здоровых десертов без сахара. Выберите любимый вкус из натуральных сладостей с доставкой в Москве.">
+  <meta name="keywords" content="каталог десертов без сахара, десерты без сахара купить, магазин десертов без сахара на заказ">
+
+  <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106530201', 'ym');
+
+    ym(106530201, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/106530201" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Каталог полезных десертов без сахара | Fit-Treats">
+  <meta property="og:description" content="Веганские торты, безглютеновая выпечка и полезные конфеты без сахара. Выберите здоровые сладости с доставкой по Москве.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fit-treats-five.vercel.app/catalog.html">
+  <meta property="og:image" content="https://fit-treats-five.vercel.app/assets/og-catalog.webp">
+
+  <link rel="canonical" href="https://fit-treats-five.vercel.app/catalog.html">
+
+  <style>
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    #catalog-grid {
+      min-height: 600px;
+      display: grid;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    @media (max-width: 475px) {
+      #catalog-grid {
+        align-content: center;
+      }
+    }
+    
+    @media (min-width: 767px) {
+      #catalog-grid {
+        align-content: center;
+        grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
+      }
+    }
+    
+    .product-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .product-image {
+      height: 200px;
+      overflow: hidden;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .product-info {
+      padding: 1rem;
+    }
+    
+    .product-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .product-desc {
+      color: #666;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2D4A3E;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="./css/bo.css">
+</head>
+<body>
+  <header></header>
+
+  <main class="container" style="padding-top: 2rem;">
+    <div class="breadcrumbs">
+      <a href="index.html">Главная</a>
+      <span>/</span>
+      <a href="catalog.html">Каталог</a>
+    </div>
+
+    <h1 id="page-title" class="section-title" style="text-align: left;">Каталог диетических десертов</h1>
+    
+    <div id="catalog-grid" class="products-grid">
+      <!-- Торты -->
+      <a href="products/maracuya-shokolad.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/cake-passion-fruit-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/cake-passion-fruit-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/cake-passion-fruit.webp" alt="Маракуйя-шоколад торт" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Маракуйя-шоколад</h3>
+          <p class="product-desc">Муссовый торт с ярким тропическим вкусом.</p>
+          <div class="product-footer">
+            <span class="product-price">2500 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+      
+      <a href="products/caramel-apple.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/cake-caramel-apple-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/cake-caramel-apple-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/cake-caramel-apple.webp" alt="Карамельное яблоко торт" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Карамельное яблоко</h3>
+          <p class="product-desc">Нежный торт с вкусом домашней карамели.</p>
+          <div class="product-footer">
+            <span class="product-price">2300 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Круассаны -->
+      <a href="products/croissant.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/croissant-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/croissant-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/croissant.webp" alt="Круассан цельнозерновой" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Круассан цельнозерновой</h3>
+          <p class="product-desc">Полезная альтернатива классической выпечке.</p>
+          <div class="product-footer">
+            <span class="product-price">250 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Конфеты -->
+      <a href="products/candies-assorti.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/candies-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/candies-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/candies.webp" alt="Ассорти конфет" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Ассорти конфет</h3>
+          <p class="product-desc">Энергия природы в каждой конфете.</p>
+          <div class="product-footer">
+            <span class="product-price">900 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Батончики -->
+      <a href="products/protein-bar-cranberry.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/bars-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/bars-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/bars.webp" alt="Протеиновый батончик с клюквой" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Протеиновый батончик с клюквой</h3>
+          <p class="product-desc">Энергетический перекус с растительным белком.</p>
+          <div class="product-footer">
+            <span class="product-price">180 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+      
+      <a href="products/chocolate-nut-bar.html" class="product-card">
+        <div class="product-image">
+          <picture>
+            <source srcset="./assets/bars-mobile.webp" media="(max-width: 640px)" type="image/webp">
+            <source srcset="./assets/bars-tablet.webp" media="(max-width: 1024px)" type="image/webp">
+            <img src="./assets/bars.webp" alt="Шоколадно-ореховый батончик" loading="lazy">
+          </picture>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">Шоколадно-ореховый батончик</h3>
+          <p class="product-desc">Насыщенный вкус темного шоколада и хрустящих орехов.</p>
+          <div class="product-footer">
+            <span class="product-price">200 ₽</span>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: #a8a29e; font-weight: bold;">Подробнее</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <footer></footer>
+
+  <script type="module" src="js/script-simple.js"></script>
+</body>
+</html>
